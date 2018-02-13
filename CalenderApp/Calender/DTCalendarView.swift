@@ -1,10 +1,5 @@
 //
 //  DTCalendarView.swift
-//  Pods
-//
-//  Created by Tim Lemaster on 6/14/17.
-//
-//
 
 import UIKit
 

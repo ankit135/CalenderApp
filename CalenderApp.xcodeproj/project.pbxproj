@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		3E1BE7D4202C282A001E7AB3 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BE7D3202C282A001E7AB3 /* EventData.swift */; };
 		3E1BE7D6202C28A5001E7AB3 /* CalenderDataVader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BE7D5202C28A5001E7AB3 /* CalenderDataVader.swift */; };
-		3E1BE7DD202C291D001E7AB3 /* Events+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BE7DB202C291D001E7AB3 /* Events+CoreDataClass.swift */; };
-		3E1BE7DE202C291D001E7AB3 /* Events+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BE7DC202C291D001E7AB3 /* Events+CoreDataProperties.swift */; };
+		3E3DAB42203175EC00207F2C /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3DAB41203175EC00207F2C /* NetworkProvider.swift */; };
+		3E3DAB472031978700207F2C /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3DAB462031978700207F2C /* WeatherData.swift */; };
+		3E3DAB4F2031A58200207F2C /* WeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3DAB4E2031A58200207F2C /* WeatherTableViewCell.swift */; };
+		3E3DAB562032FBB700207F2C /* Events+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3DAB542032FBB700207F2C /* Events+CoreDataClass.swift */; };
+		3E3DAB572032FBB700207F2C /* Events+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3DAB552032FBB700207F2C /* Events+CoreDataProperties.swift */; };
 		3E44776D202C108C009819FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E44776C202C108C009819FD /* AppDelegate.swift */; };
 		3E44776F202C108C009819FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E44776E202C108C009819FD /* ViewController.swift */; };
 		3E447772202C108C009819FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E447770202C108C009819FD /* Main.storyboard */; };
@@ -51,8 +54,11 @@
 /* Begin PBXFileReference section */
 		3E1BE7D3202C282A001E7AB3 /* EventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
 		3E1BE7D5202C28A5001E7AB3 /* CalenderDataVader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalenderDataVader.swift; sourceTree = "<group>"; };
-		3E1BE7DB202C291D001E7AB3 /* Events+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Events+CoreDataClass.swift"; sourceTree = "<group>"; };
-		3E1BE7DC202C291D001E7AB3 /* Events+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Events+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3E3DAB41203175EC00207F2C /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		3E3DAB462031978700207F2C /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
+		3E3DAB4E2031A58200207F2C /* WeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTableViewCell.swift; sourceTree = "<group>"; };
+		3E3DAB542032FBB700207F2C /* Events+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Events+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3E3DAB552032FBB700207F2C /* Events+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Events+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3E447769202C108C009819FD /* CalenderApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalenderApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E44776C202C108C009819FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E44776E202C108C009819FD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -120,10 +126,11 @@
 			isa = PBXGroup;
 			children = (
 				3E1BE7D3202C282A001E7AB3 /* EventData.swift */,
+				3E3DAB542032FBB700207F2C /* Events+CoreDataClass.swift */,
+				3E3DAB552032FBB700207F2C /* Events+CoreDataProperties.swift */,
 				3EAF8885202D7E680010F284 /* EventSectionsData.swift */,
-				3E1BE7DB202C291D001E7AB3 /* Events+CoreDataClass.swift */,
-				3E1BE7DC202C291D001E7AB3 /* Events+CoreDataProperties.swift */,
 				3E1BE7D5202C28A5001E7AB3 /* CalenderDataVader.swift */,
+				3E3DAB462031978700207F2C /* WeatherData.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -132,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				3E4477A7202C1DB9009819FD /* CellTableViewCell.swift */,
+				3E3DAB4E2031A58200207F2C /* WeatherTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -144,6 +152,14 @@
 				3EAF8882202D646E0010F284 /* CalenderViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3E3DAB40203175D700207F2C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				3E3DAB41203175EC00207F2C /* NetworkProvider.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		3E447760202C108C009819FD = {
@@ -169,6 +185,7 @@
 		3E44776B202C108C009819FD /* CalenderApp */ = {
 			isa = PBXGroup;
 			children = (
+				3E3DAB40203175D700207F2C /* Network */,
 				3E1BE7D2202C27CA001E7AB3 /* ViewControllers */,
 				3E1BE7D1202C27B8001E7AB3 /* Cells */,
 				3E1BE7D0202C27A9001E7AB3 /* DataModels */,
@@ -336,6 +353,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E3DAB4F2031A58200207F2C /* WeatherTableViewCell.swift in Sources */,
+				3E3DAB562032FBB700207F2C /* Events+CoreDataClass.swift in Sources */,
+				3E3DAB472031978700207F2C /* WeatherData.swift in Sources */,
 				3E447775202C108C009819FD /* CalenderApp.xcdatamodeld in Sources */,
 				3ECC0A9B202C40C900E02E62 /* AddEventViewController.swift in Sources */,
 				3E1BE7D6202C28A5001E7AB3 /* CalenderDataVader.swift in Sources */,
@@ -344,10 +364,10 @@
 				3E1BE7D4202C282A001E7AB3 /* EventData.swift in Sources */,
 				3E4477A3202C1D2A009819FD /* DTCalendarView.swift in Sources */,
 				3E4477A4202C1D2A009819FD /* DTCalendarWeekCell.swift in Sources */,
-				3E1BE7DD202C291D001E7AB3 /* Events+CoreDataClass.swift in Sources */,
-				3E1BE7DE202C291D001E7AB3 /* Events+CoreDataProperties.swift in Sources */,
 				3E44776F202C108C009819FD /* ViewController.swift in Sources */,
+				3E3DAB42203175EC00207F2C /* NetworkProvider.swift in Sources */,
 				3E4477A5202C1D2A009819FD /* DTCalendarDayView.swift in Sources */,
+				3E3DAB572032FBB700207F2C /* Events+CoreDataProperties.swift in Sources */,
 				3ECC0A99202C3D9E00E02E62 /* DateUtility.swift in Sources */,
 				3E4477A8202C1DB9009819FD /* CellTableViewCell.swift in Sources */,
 				3E44776D202C108C009819FD /* AppDelegate.swift in Sources */,

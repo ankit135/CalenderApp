@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
     
@@ -32,13 +33,15 @@ class ViewController: UIViewController {
         
         setViewcontrollerTitle(startDate)
         
-        tableView.visibleCells
         
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dataArray  = CalenderDataVader.sharedInstance.getTotalEventsData()
         tableView.reloadData()
+        let loc = CLLocation(latitude: 12.9716, longitude: 77.5946)
+        //callWeatherData(location: loc)
+        
     }
 
     @IBAction func addEventTapped(_ sender: Any) {
@@ -54,7 +57,29 @@ class ViewController: UIViewController {
         
     }
     
-
+    func callWeatherData(location : CLLocation){
+        let obj = NetworkProvider()
+        obj.getWeatherDetails(location: location) { (dict) in
+            if let dict = dict{
+                if let dailyData = dict["daily"] as? [String:AnyObject]{
+                    if let dataArr = dailyData["data"] as? [[String:AnyObject]]{
+                        for data in dataArr{
+                            let weatherData = WeatherData(dict: data)
+                            if let summary = weatherData.summary, let date = weatherData.date, let icon = weatherData.icon{
+                                CalenderDataVader.sharedInstance.saveEvent(eventTitle: summary, date: date)
+                            }
+                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.dataArray  = CalenderDataVader.sharedInstance.getTotalEventsData()
+                    self.tableView.reloadData()
+                }
+                
+            }
+        }
+        
+    }
 
 }
 
@@ -129,10 +154,18 @@ extension ViewController : UITableViewDataSource{
         let data =  dataArray[indexPath.section].eventData
         
         if data.count > 0{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! CellTableViewCell
-            let data = data[indexPath.row]
-            cell.data = data
-            return cell
+            if data[indexPath.row].type == 1{ //Event Cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! CellTableViewCell
+                let data = data[indexPath.row]
+                cell.data = data
+                return cell
+            }else{ // Weather Cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCellID", for: indexPath) as! WeatherTableViewCell
+                let data = data[indexPath.row]
+                cell.data = data
+                return cell
+            }
+            
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "blankCell", for: indexPath)
             return cell

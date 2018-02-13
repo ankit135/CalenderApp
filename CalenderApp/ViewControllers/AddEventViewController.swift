@@ -22,7 +22,6 @@ class AddEventViewController: UIViewController {
         setDateLabel(selectedDate)
         
 
-        // Do any additional setup after loading the view.
     }
     
     func setDateLabel(_ date : Date){

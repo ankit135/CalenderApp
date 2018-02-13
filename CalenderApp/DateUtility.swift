@@ -124,5 +124,9 @@ extension Date {
     init(milliseconds:Int) {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
     }
+    
+    static func fromMillis(_ millis: NSNumber?) -> Date? {
+        return millis.map() { number in Date(timeIntervalSince1970: Double(truncating: number) / 1000)}
+    }
 }
 

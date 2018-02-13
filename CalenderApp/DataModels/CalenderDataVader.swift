@@ -67,6 +67,8 @@ class CalenderDataVader: NSObject {
         
         record.name = eventTitle
         record.date = date as NSDate
+//        record.type = type
+//        record.icon = icon
         
         do {
             try managedObjectContext.save()

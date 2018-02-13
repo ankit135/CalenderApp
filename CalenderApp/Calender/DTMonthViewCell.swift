@@ -1,9 +1,5 @@
 //
 //  DTMonthViewCell.swift
-//  Pods
-//
-//  Created by Tim Lemaster on 6/16/17.
-//
 //
 
 import UIKit
