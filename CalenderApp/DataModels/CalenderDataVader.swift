@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 public let startDate = Date()
-public let endDate = Date(timeIntervalSinceNow: 60 * 60 * 24 * 30 * 12 * 0.5)
+public let endDate = Date(timeIntervalSince1970: TimeInterval(truncating: 1535673600)) 
 
 class CalenderDataVader: NSObject {
     
@@ -43,7 +43,7 @@ class CalenderDataVader: NSObject {
                         let eventDate = date as Date
                         if eventDate.dateIneeemonInLocal == day.dateIneeemonInLocal{
                             
-                            let data = EventData(eventName: event.name, eventDate: event.date! as Date)
+                            let data = EventData(eventName: event.name, eventDate: event.date! as Date, icon : "", type : 1)
                             eventData.append(data)
                         }
                     }

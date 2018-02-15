@@ -13,6 +13,11 @@ class ViewController: UIViewController {
     
     var monthYearFormatter =  DateFormatter()
     var dataArray : [EventSectionsData] = []
+    var weatherDataArray : [EventData] = []
+    var locationManger : CLLocationManager!
+    var currentLocation : CLLocation?
+    var updateAfterCheck = false
+    var weatherDataCalled = false
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var calenderView: DTCalendarView!{
@@ -32,21 +37,22 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         setViewcontrollerTitle(startDate)
-        
-        
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        initializeLocationManager()
+        getUserLocation()
         dataArray  = CalenderDataVader.sharedInstance.getTotalEventsData()
         tableView.reloadData()
-        let loc = CLLocation(latitude: 12.9716, longitude: 77.5946)
-        //callWeatherData(location: loc)
-        
     }
-
+    
     @IBAction func addEventTapped(_ sender: Any) {
+        openAddEventVC(date : Date())
+    }
+    
+    func openAddEventVC(date : Date){
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyBoard.instantiateViewController(withIdentifier: "addEventNavigationVC") as! UINavigationController
+        let vc = rootVC.viewControllers[0] as! AddEventViewController
+        vc.selectedDate = date
+        vc.addEventDelegate = self
         self.present(rootVC, animated: true, completion: nil)
     }
     
@@ -55,6 +61,77 @@ class ViewController: UIViewController {
         monthYearFormatter.dateFormat = "MMM YYYY"
         self.title = monthYearFormatter.string(from: date).capitalized
         
+    }
+    
+    func initializeLocationManager(){
+        
+        locationManger = CLLocationManager()
+        locationManger.delegate = self
+        locationManger.requestWhenInUseAuthorization()
+        locationManger.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+    }
+    
+    func locationAlwaysAllow(){
+        
+        if CLLocationManager.authorizationStatus() == .denied {
+            
+            if CLLocationManager.locationServicesEnabled(){
+                
+                let alert = UIAlertController(title: "For Better Accuracy, Location Permission needed", message: "Go to App Settings -> Location -> While Using the App", preferredStyle: UIAlertControllerStyle.alert)
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {action in
+                    
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Settings", style: UIAlertActionStyle.default, handler: {action in
+                    self.updateAfterCheck = true
+                    UIApplication.shared.open(URL(string:UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+                    
+                }))
+                
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+            else{
+                let alert = UIAlertController(title: "Location is off, For Better Accuracy", message: "Go to Settings -> Privacy -> Location Service -> On", preferredStyle: UIAlertControllerStyle.alert)
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {action in
+                    
+                }))
+                
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    func getUserLocation(){
+        
+        updateAfterCheck = false
+        
+        if gpsOn(){
+            locationManger.startUpdatingLocation()
+            
+        }else{
+            updateAfterCheck = true
+            locationManger.requestWhenInUseAuthorization()
+            locationAlwaysAllow()
+            
+        }
+    }
+    
+    func gpsOn() -> Bool{
+        
+        if CLLocationManager.locationServicesEnabled(){
+            if CLLocationManager.authorizationStatus() == .authorizedAlways ||  CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+                return true
+            }else{
+                locationAlwaysAllow()
+            }
+        }
+        return false
     }
     
     func callWeatherData(location : CLLocation){
@@ -66,13 +143,17 @@ class ViewController: UIViewController {
                         for data in dataArr{
                             let weatherData = WeatherData(dict: data)
                             if let summary = weatherData.summary, let date = weatherData.date, let icon = weatherData.icon{
-                                CalenderDataVader.sharedInstance.saveEvent(eventTitle: summary, date: date)
+                                self.weatherDataArray.append(EventData(eventName: summary, eventDate: date, icon : icon, type : 2))
+                                for eventData in self.dataArray{
+                                    if eventData.date?.dateIneeemonInLocal == date.dateIneeemonInLocal{
+                                        eventData.eventData.append(EventData(eventName: summary, eventDate: date, icon : icon, type : 2))
+                                    }
+                                }
                             }
                         }
                     }
                 }
                 DispatchQueue.main.async {
-                    self.dataArray  = CalenderDataVader.sharedInstance.getTotalEventsData()
                     self.tableView.reloadData()
                 }
                 
@@ -80,19 +161,65 @@ class ViewController: UIViewController {
         }
         
     }
+    
+}
 
+extension ViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        let location : CLLocation = locations.first!
+        
+        self.perform(#selector(ViewController.geoGMScode(_:)), with: location, afterDelay: 1)
+        locationManger.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if updateAfterCheck{
+            getUserLocation()
+        }
+    }
+    
+    @objc func geoGMScode(_ location : CLLocation){
+        currentLocation = location
+        if !weatherDataCalled{
+            weatherDataCalled = true
+            callWeatherData(location: location)
+        }
+        
+    }
+    
 }
 
 extension ViewController : UITableViewDelegate{
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = dataArray[indexPath.section]
+        if data.eventData.count == 0{
+            if let date = data.date{
+                openAddEventVC(date: date)
+            }
+        }
+    }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
         if let indexSet = tableView.indexPathsForVisibleRows{
-            let topIndex = indexSet[1]
+            let topIndex = indexSet[0]
             if dataArray.count > topIndex.section{
                 if let date = dataArray[topIndex.section].date{
                     calenderView.selectionStartDate = date
                     calenderView.scrollTo(month: date, animated: true)
+                    
+                }
+                
+            }
+        }
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let indexSet = tableView.indexPathsForVisibleRows{
+            let topIndex = indexSet[0]
+            if dataArray.count > topIndex.section{
+                if let date = dataArray[topIndex.section].date{
+                    //                    calenderView.scrollTo(month: date, animated: true)
                     setViewcontrollerTitle(date)
                 }
                 
@@ -104,17 +231,17 @@ extension ViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-            return 30
-            
-        }
+        return 30
+        
+    }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-            return 50
-            
-        }
-
+        return 50
+        
+    }
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -146,7 +273,6 @@ extension ViewController : UITableViewDataSource{
         if dataArray[section].eventData.count > 0{
             return dataArray[section].eventData.count
         }
-        
         return 1
     }
     
@@ -166,7 +292,7 @@ extension ViewController : UITableViewDataSource{
                 return cell
             }
             
-        }else{
+        }else{ // Blank cell in case of No event
             let cell = tableView.dequeueReusableCell(withIdentifier: "blankCell", for: indexPath)
             return cell
         }
@@ -237,6 +363,26 @@ extension ViewController: DTCalendarViewDelegate {
         label.textAlignment = .center
         label.backgroundColor = UIColor.white
         return label
+    }
+}
+extension ViewController : AddEventProtocol{
+    func saveTapped(){
+        dataArray  = CalenderDataVader.sharedInstance.getTotalEventsData()
+        
+        for weatherData in weatherDataArray{
+            if let summary = weatherData.eventName, let date = weatherData.eventDate, let icon = weatherData.icon{
+                for eventData in self.dataArray{
+                    if eventData.date?.dateIneeemonInLocal == date.dateIneeemonInLocal{
+                        eventData.eventData.append(EventData(eventName: summary, eventDate: date, icon : icon, type : 2))
+                    }
+                }
+            }
+        }
+        tableView.reloadData()
+        
+    }
+    func cancelTapped(){
+        
     }
 }
 

@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol AddEventProtocol : class {
+    func saveTapped()
+    func cancelTapped()
+}
+
 class AddEventViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var textVeiw: UITextField!
     
     var selectedDate = Date()
+    weak var addEventDelegate : AddEventProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,12 +55,15 @@ class AddEventViewController: UIViewController {
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
+        addEventDelegate?.cancelTapped()
         self.dismiss(animated: true, completion: nil)
+        
     }
     
     @IBAction func saveTapped(_ sender: Any) {
         if textVeiw.text != ""{
             CalenderDataVader.sharedInstance.saveEvent(eventTitle: textVeiw.text!, date: self.selectedDate)
+            addEventDelegate?.saveTapped()
             self.dismiss(animated: true, completion: nil)
         }else{
             showPopUp()

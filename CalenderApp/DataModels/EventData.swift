@@ -15,11 +15,11 @@ class EventData: NSObject {
     var icon : String?
     var type : Int16?
     
-    init(eventName : String?, eventDate : Date?) {
+    init(eventName : String?, eventDate : Date?, icon : String?, type : Int16?) {
         self.eventDate = eventDate
         self.eventName = eventName
-//        self.icon = icon
-//        self.type = type
+        self.icon = icon
+        self.type = type
     }
     
 
