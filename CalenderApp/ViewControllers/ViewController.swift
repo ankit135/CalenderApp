@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         locationManger.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     }
     
-    func locationAlwaysAllow(){
+    func handleLocationUnAuthorisedCase(){
         
         if CLLocationManager.authorizationStatus() == .denied {
             
@@ -111,24 +111,24 @@ class ViewController: UIViewController {
         
         updateAfterCheck = false
         
-        if gpsOn(){
+        if isGPSOn(){
             locationManger.startUpdatingLocation()
             
         }else{
             updateAfterCheck = true
             locationManger.requestWhenInUseAuthorization()
-            locationAlwaysAllow()
+            handleLocationUnAuthorisedCase()
             
         }
     }
     
-    func gpsOn() -> Bool{
+    func isGPSOn() -> Bool{
         
         if CLLocationManager.locationServicesEnabled(){
             if CLLocationManager.authorizationStatus() == .authorizedAlways ||  CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
                 return true
             }else{
-                locationAlwaysAllow()
+                handleLocationUnAuthorisedCase()
             }
         }
         return false
@@ -163,7 +163,7 @@ class ViewController: UIViewController {
     }
     
 }
-
+// MARK:- Location Handling
 extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
@@ -189,7 +189,7 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
 }
-
+// MARK:- Tableview Handling
 extension ViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -301,9 +301,7 @@ extension ViewController : UITableViewDataSource{
     }
     
 }
-extension ViewController : UIScrollViewDelegate{
-    
-}
+// MARK:- Calender Handling
 extension ViewController: DTCalendarViewDelegate {
     
     func calendarView(_ calendarView: DTCalendarView, didSelectDate date: Date) {
@@ -365,6 +363,7 @@ extension ViewController: DTCalendarViewDelegate {
         return label
     }
 }
+// MARK:- Add Event Handling
 extension ViewController : AddEventProtocol{
     func saveTapped(){
         dataArray  = CalenderDataVader.sharedInstance.getTotalEventsData()

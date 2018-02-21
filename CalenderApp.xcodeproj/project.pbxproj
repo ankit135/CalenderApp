@@ -162,6 +162,14 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		3E3DAB5F2036DA0400207F2C /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				3ECC0A98202C3D9E00E02E62 /* DateUtility.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		3E447760202C108C009819FD = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +193,7 @@
 		3E44776B202C108C009819FD /* CalenderApp */ = {
 			isa = PBXGroup;
 			children = (
+				3E3DAB5F2036DA0400207F2C /* Utility */,
 				3E3DAB40203175D700207F2C /* Network */,
 				3E1BE7D2202C27CA001E7AB3 /* ViewControllers */,
 				3E1BE7D1202C27B8001E7AB3 /* Cells */,
@@ -195,7 +204,6 @@
 				3E447776202C108C009819FD /* Assets.xcassets */,
 				3E447778202C108C009819FD /* LaunchScreen.storyboard */,
 				3E44777B202C108C009819FD /* Info.plist */,
-				3ECC0A98202C3D9E00E02E62 /* DateUtility.swift */,
 				3E447773202C108C009819FD /* CalenderApp.xcdatamodeld */,
 			);
 			path = CalenderApp;

@@ -11,7 +11,6 @@ import CoreLocation
 
 class NetworkProvider: NSObject {
     
-    
     func getWeatherDetails(location : CLLocation, completion: @escaping ([String:AnyObject]?) -> ()) {
         
         let urlString = "https://api.darksky.net/forecast/47edc8e1ef5a7383057135e95f45a33c/\(location.coordinate.latitude),\(location.coordinate.longitude)"
